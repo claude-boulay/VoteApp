@@ -1,0 +1,39 @@
+services:
+  node:
+    build:
+      context: ./result
+      dockerfile: Dockerfile
+    networks:
+      - net
+  python:
+    build:
+      context: ./vote
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - net
+  redis:
+    image: redis:alpine
+    networks:
+      - net
+  postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_USER=postgres 
+      POSTGRES_PASSWORD=postgres 
+      POSTGRES_DB=postgres 
+  worker:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - net
+networks:
+  net:
+volumes:
+  
