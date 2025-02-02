@@ -1,16 +1,18 @@
-#https://learn.microsoft.com/fr-fr/dotnet/core/docker/build-container?tabs=windows&pivots=dotnet-9-0
-FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:3fcf6f1e809c0553f9feb222369f58749af314af6f063f389cbd2f913b4ad556 AS build
-WORKDIR /App
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
-# Copy everything
-COPY . ./
-# Restore as distinct layers
+WORKDIR /application
+
+COPY Worker.csproj ./
 RUN dotnet restore
-# Build and publish a release
-RUN dotnet publish -c release --self-contained false --no-restore
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:9.0@sha256:b4bea3a52a0a77317fa93c5bbdb076623f81e3e2f201078d89914da71318b5d8
-WORKDIR /App
-COPY --from=build /App/out .
+COPY . ./
+RUN dotnet publish -c release --self-contained false --no-restore -o /publish
+
+
+FROM mcr.microsoft.com/dotnet/runtime:7.0
+
+WORKDIR /application
+
+COPY --from=build /publish .
+
 ENTRYPOINT ["dotnet", "Worker.dll"]
