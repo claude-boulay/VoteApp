@@ -62,7 +62,7 @@ services:
         condition: on-failure
 networks:
   vote:
-    driver: bridge
+    driver: overlay
 volumes:
   redis_data:
   postgres_data:
