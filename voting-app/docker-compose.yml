@@ -1,8 +1,6 @@
 services:
   node:
-    build:
-      context: ./result
-      dockerfile: Dockerfile
+    image: claudeb41/voteapp-node:v1
     ports:
       - 8888:8888
     networks: 
@@ -16,9 +14,7 @@ services:
       restart_policy:
         condition: on-failure
   python:
-    build:
-      context: ./vote
-      dockerfile: Dockerfile
+    image: claudeb41/voteapp-pyth:v1
     ports:
       - 8080:8080
     depends_on:
@@ -55,9 +51,7 @@ services:
       restart_policy:
         condition: on-failure
   worker:
-    build:
-      context: ./worker
-      dockerfile: Dockerfile
+    image: claudeb41/voteapp-worker:v1
     depends_on:
       - postgres
       - redis
