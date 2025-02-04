@@ -21,4 +21,5 @@ docker service ps "nom du service voulue"
 Pour reset 
 être dans le dossier voting-app
 cd VotingApp/voting-app
-./script.bash
+chmod +x ./reset.bash
+./reset.bash
