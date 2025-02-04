@@ -19,7 +19,6 @@ services:
       - 8080:8080
     depends_on:
       - redis
-      - postgres
     networks:
       - vote
     deploy:
@@ -37,7 +36,7 @@ services:
       restart_policy:
         condition: on-failure
   postgres:
-    image: postgres:12
+    image: postgres:14.5
     environment:
       POSTGRES_USER: postgres 
       POSTGRES_PASSWORD: postgres 
@@ -55,8 +54,6 @@ services:
     depends_on:
       - postgres
       - redis
-    ports:
-      - 5000:5000
     networks:
       - vote
     deploy:
@@ -65,7 +62,7 @@ services:
         condition: on-failure
 networks:
   vote:
-    driver: overlay
+    driver: bridge
 volumes:
   redis_data:
   postgres_data:

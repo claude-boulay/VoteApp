@@ -14,3 +14,6 @@ vagrant ssh manager1
 cd VoteApp/voting-app/
 docker network create --driver overlay vote
 docker stack deploy --compose-file docker-compose.yml vote-app
+
+docker service ls "affichage des service"
+docker service ps "nom du service voulue"
