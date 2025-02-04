@@ -1,4 +1,2 @@
-#permets de fermer les conteneur en supprimmant le contenue des volumes
-docker compose down -v
-#redémarre les conteneurs
-docker compose up -d
+#permets de vider la tables votes
+docker exec -it $(docker ps -q -f name=vote-app_postgres) psql -U postgres -d postgres -c "DELETE FROM votes;"
