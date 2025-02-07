@@ -4,6 +4,8 @@
 VoteApp est une application distribuée permettant à une audience de voter entre deux propositions.  
 Elle est composée de plusieurs modules conteneurisés avec **Docker** et déployée sur un **cluster Docker Swarm**.
 
+**Remarque** : Avant d'exécuter la commande "**vagrant up**", veuillez consulter la section "**Structure du projet**", notamment la partie concernant le **Vagrantfile**, afin de vous assurer d'utiliser la version appropriée pour votre environnement (*VirtualBox* ou *VMware*).
+
 ## 🏗 **Architecture**  
 
 L'application repose sur plusieurs services :  
@@ -51,28 +53,44 @@ Cela démarre **3 machines** :
 
 #### 🔹 **2. Initialiser Swarm sur le manager**  
 ```sh
-docker swarm init --advertise-addr <IP_MANAGER>
+vagrant shh manager1
+vagrant@manager1:~$ docker swarm init --advertise-addr <IP_MANAGER>
 ```
 
 #### 🔹 **3. Ajouter les workers**  
 Sur chaque worker (`worker1` et `worker2` avec **vagrant ssh worker1** OU **worker2**), exécuter la commande `docker swarm join ...` fournie après l'init.
 
 #### 🔹 **4. Déployer l'application sur le cluster**  
-Depuis `manager1` (vagrant ssh manager1):  
+Depuis `manager1` (vagrant ssh manager1) et dans le répertoire  `/vagrant/voting-app `:  
 ```sh
-docker stack deploy -c docker-compose.yml vote-app
+vagrant shh manager1
+vagrant@manager1:~$ docker stack deploy -c docker-compose.yml vote-app
 ```
 
 #### 🔹 **5. Vérifier le déploiement**  
 ```sh
-docker service ls
+vagrant shh manager1
+vagrant@manager1:~$ docker service ls
 ```
 
-#### 🔹 **6. Réinitialiser les votes**  
+#### 🔹 **6. Aller voter**  
+Avec votre navigateur préféré, rendez-vous sur `http://192.168.99.100:8080/` pour voter. 
+
+#### 🔹 **7. Voir le résultat des votes**  
+Avec ce même navigateur, rendez-vous sur `http://192.168.99.100:8888/` afin de voir le résultat des votes.
+
+**Remarque** : Afin d'actualiser les votes et également pour voir les vote une fois remi à zéro, **relancer** les services :  
 ```sh
-cd VoteApp/voting-app
-chmod +x ./reset.bash
-./reset.bash
+vagrant shh manager1 
+vagrant@manager1:~$ docker stack deploy -c /vagrant/voting-app/docker-compose.yml vote-app
+```
+
+#### 🔹 **8. Réinitialiser les votes**  
+```sh
+vagrant ssh manager1
+vagrant@manager1:~$ cd /vagrant/voting-app
+vagrant@manager1:/vagrant/voting-app$ chmod +x ./reset.bash
+vagrant@manager1:/vagrant/voting-app$ ./reset.bash
 ```
 
 ## 📜 **Structure du projet**  
@@ -82,9 +100,9 @@ VoteApp/
 
 │── README.md
 
-│── Vagrantfile # ! Vagrantfile pour Virtualbox, à renommer "Vagrantfile-Virtualbox" si vous utilisez ce logiciel !
+│── Vagrantfile-Virtualbox # ! À renommer "Vagrantfile" avant de faire "vagrant up" si vous utilisez Virtualbox !
 
-│── Vagrantfile-VMware # ! A renommer "Vagrantfile" si vous utilisez VMware !
+│── Vagrantfile-VMware # ! À renommer "Vagrantfile" avant de faire "vagrant up" si vous utilisez VMware !
 
 │── voting-app/ 
     │── vote/       # Code source de l'application Vote (Python)
