@@ -63,8 +63,9 @@ Sur chaque worker (`worker1` et `worker2` avec **vagrant ssh worker1** OU **work
 #### 🔹 **4. Déployer l'application sur le cluster**  
 Depuis `manager1` (vagrant ssh manager1) et dans le répertoire  `/vagrant/voting-app `:  
 ```sh
-vagrant ssh manager1
-vagrant@manager1:~$ docker stack deploy -c docker-compose.yml vote-app
+vagrant ssh manager1 
+vagrant@manager1:~$ cd /vagrant/voting-app
+vagrant@manager1:/vagrant/voting-app$ docker stack deploy -c /vagrant/voting-app/docker-compose.yml vote-app
 ```
 
 #### 🔹 **5. Vérifier le déploiement**  
@@ -81,20 +82,24 @@ Avec votre navigateur préféré, rendez-vous sur `http://192.168.99.100:8080/` 
 #### 🔹 **2. Voir le résultat des votes**  
 Avec ce même navigateur, rendez-vous sur `http://192.168.99.100:8888/` afin de voir le résultat des votes.
 
-**Remarque** : Afin d'actualiser les votes et également pour voir les vote une fois remi à zéro, **relancer** les services :  
+**Remarque** : Afin d'actualiser les votes et également pour voir les votes une fois remis à zéro, il peut être nécessaire de **relancer** les services :  
 ```sh
 vagrant ssh manager1 
-vagrant@manager1:~$ docker stack deploy -c /vagrant/voting-app/docker-compose.yml vote-app
+vagrant@manager1:~$ cd /vagrant/voting-app
+vagrant@manager1:/vagrant/voting-app$ docker stack deploy -c /vagrant/voting-app/docker-compose.yml vote-app
 ```
 
 #### 🔹 **3. Réinitialiser les votes**  
-Afin d'effectuer le reset des votes, veuillez vous connecter à la machine gérant le service PostgreSQL. *Commande pour savoir quelle machine gère le service : `docker service ps vote-app_postgres`*
+Pour **remettre à zéro**les votes enregistrés dans la base de données PostgreSQL, exécutez le script **reset.bash**. Ce script supprime toutes les entrées de la table votes pour chaque réplique du service PostgreSQL et doit être exécuter en étant connecté sur le nœud gérant ce service.
+
+Savoir quel nœud gère Postgres :  ` docker service ps vote-app_postgres`
+
 ```sh
-vagrant ssh <nomDeLaMachineGérantPostgres>
-vagrant@<nomDeLaMachinegérantPostgres>:~$ git clone <lienCloneDuProjet>
-vagrant@<nomDeLaMachinegérantPostgres>:-$ cd VoteApp/voting-app
-vagrant@<nomDeLaMachinegérantPostgres>:/VoteAPP/voting-app$ chmod +x ./reset.bash
-vagrant@<nomDeLaMachinegérantPostgres>:/VoteAPP/voting-app$ ./reset.bash
+vagrant ssh <nomDuNœudGérantPostgres>
+cd /vagrant/voting-app
+sed -i 's/\r$//' /vagrant/voting-app/reset.bash
+chmod +x reset.bash
+./reset.bash
 ```
 
 ## 📜 **Structure du projet**  
