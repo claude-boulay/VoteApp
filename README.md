@@ -73,10 +73,12 @@ vagrant shh manager1
 vagrant@manager1:~$ docker service ls
 ```
 
-#### 🔹 **6. Aller voter**  
+### 4️⃣ **Utiliser l'application de vote**
+
+#### 🔹 **1. Aller voter**  
 Avec votre navigateur préféré, rendez-vous sur `http://192.168.99.100:8080/` pour voter. 
 
-#### 🔹 **7. Voir le résultat des votes**  
+#### 🔹 **2. Voir le résultat des votes**  
 Avec ce même navigateur, rendez-vous sur `http://192.168.99.100:8888/` afin de voir le résultat des votes.
 
 **Remarque** : Afin d'actualiser les votes et également pour voir les vote une fois remi à zéro, **relancer** les services :  
@@ -85,7 +87,7 @@ vagrant shh manager1
 vagrant@manager1:~$ docker stack deploy -c /vagrant/voting-app/docker-compose.yml vote-app
 ```
 
-#### 🔹 **8. Réinitialiser les votes**  
+#### 🔹 **3. Réinitialiser les votes**  
 Afin d'effectuer le reset des votes, veuillez vous connecter à la machine gérant le service PostgreSQL. *Commande pour savoir quelle machine gère le service : `docker service ps vote-app_postgres`*
 ```sh
 vagrant ssh <nomDeLaMachineGérantPosgre>
@@ -111,7 +113,6 @@ VoteApp/
     │── result/     # Code source de l'application Result (Node.js)
     │── worker/     # Code source du Worker (.NET)
     │── docker-compose.yml      # Configuration des conteneurs
-    │── Vagrantfile     # Configuration du cluster Swarm
 ```
 
 ## 🖊 **Auteurs**  
