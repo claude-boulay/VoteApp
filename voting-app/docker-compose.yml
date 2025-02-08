@@ -10,7 +10,7 @@ services:
     volumes:
       - result:/app/result
     deploy:
-      replicas: 2  
+      replicas: 1  
       restart_policy:
         condition: on-failure
   python:
@@ -22,7 +22,7 @@ services:
     networks:
       - vote
     deploy:
-      replicas: 2  
+      replicas: 1  
       restart_policy:
         condition: on-failure
   redis:
@@ -32,7 +32,7 @@ services:
     volumes:
       - redis_data:/data
     deploy:
-      replicas: 2 
+      replicas: 1 
       restart_policy:
         condition: on-failure
   postgres:
@@ -46,7 +46,7 @@ services:
     networks:
       - vote
     deploy:
-      replicas: 2 
+      replicas: 1 
       restart_policy:
         condition: on-failure
   worker:
@@ -57,7 +57,7 @@ services:
     networks:
       - vote
     deploy:
-      replicas: 2  
+      replicas: 1  
       restart_policy:
         condition: on-failure
 networks:
