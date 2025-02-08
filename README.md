@@ -53,7 +53,7 @@ Cela démarre **3 machines** :
 
 #### 🔹 **2. Initialiser Swarm sur le manager**  
 ```sh
-vagrant shh manager1
+vagrant ssh manager1
 vagrant@manager1:~$ docker swarm init --advertise-addr <IP_MANAGER>
 ```
 
@@ -63,13 +63,13 @@ Sur chaque worker (`worker1` et `worker2` avec **vagrant ssh worker1** OU **work
 #### 🔹 **4. Déployer l'application sur le cluster**  
 Depuis `manager1` (vagrant ssh manager1) et dans le répertoire  `/vagrant/voting-app `:  
 ```sh
-vagrant shh manager1
+vagrant ssh manager1
 vagrant@manager1:~$ docker stack deploy -c docker-compose.yml vote-app
 ```
 
 #### 🔹 **5. Vérifier le déploiement**  
 ```sh
-vagrant shh manager1
+vagrant ssh manager1
 vagrant@manager1:~$ docker service ls
 ```
 
@@ -83,7 +83,7 @@ Avec ce même navigateur, rendez-vous sur `http://192.168.99.100:8888/` afin de 
 
 **Remarque** : Afin d'actualiser les votes et également pour voir les vote une fois remi à zéro, **relancer** les services :  
 ```sh
-vagrant shh manager1 
+vagrant ssh manager1 
 vagrant@manager1:~$ docker stack deploy -c /vagrant/voting-app/docker-compose.yml vote-app
 ```
 
