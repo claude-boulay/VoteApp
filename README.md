@@ -86,11 +86,13 @@ vagrant@manager1:~$ docker stack deploy -c /vagrant/voting-app/docker-compose.ym
 ```
 
 #### 🔹 **8. Réinitialiser les votes**  
+Afin d'effectuer le reset des votes, veuillez vous connecter à la machine gérant le service PostgreSQL. *Commande pour savoir quelle machine gère le service : `docker service ps vote-app_postgres`*
 ```sh
-vagrant ssh manager1
-vagrant@manager1:~$ cd /vagrant/voting-app
-vagrant@manager1:/vagrant/voting-app$ chmod +x ./reset.bash
-vagrant@manager1:/vagrant/voting-app$ ./reset.bash
+vagrant ssh <nomDeLaMachineGérantPosgre>
+vagrant@<nomDeLaMachinegérantPosgre>:~$ git clone <lienCloneDuProjet>
+vagrant@<nomDeLaMachinegérantPosgre>:-$ cd VoteApp/voting-app
+vagrant@<nomDeLaMachinegérantPosgre>:/VoteAPP/voting-app$ chmod +x ./reset.bash
+vagrant@<nomDeLaMachinegérantPosgre>:/VoteAPP/voting-app$ ./reset.bash
 ```
 
 ## 📜 **Structure du projet**  
