@@ -90,11 +90,11 @@ vagrant@manager1:~$ docker stack deploy -c /vagrant/voting-app/docker-compose.ym
 #### 🔹 **3. Réinitialiser les votes**  
 Afin d'effectuer le reset des votes, veuillez vous connecter à la machine gérant le service PostgreSQL. *Commande pour savoir quelle machine gère le service : `docker service ps vote-app_postgres`*
 ```sh
-vagrant ssh <nomDeLaMachineGérantPosgre>
-vagrant@<nomDeLaMachinegérantPosgre>:~$ git clone <lienCloneDuProjet>
-vagrant@<nomDeLaMachinegérantPosgre>:-$ cd VoteApp/voting-app
-vagrant@<nomDeLaMachinegérantPosgre>:/VoteAPP/voting-app$ chmod +x ./reset.bash
-vagrant@<nomDeLaMachinegérantPosgre>:/VoteAPP/voting-app$ ./reset.bash
+vagrant ssh <nomDeLaMachineGérantPostgres>
+vagrant@<nomDeLaMachinegérantPostgres>:~$ git clone <lienCloneDuProjet>
+vagrant@<nomDeLaMachinegérantPostgres>:-$ cd VoteApp/voting-app
+vagrant@<nomDeLaMachinegérantPostgres>:/VoteAPP/voting-app$ chmod +x ./reset.bash
+vagrant@<nomDeLaMachinegérantPostgres>:/VoteAPP/voting-app$ ./reset.bash
 ```
 
 ## 📜 **Structure du projet**  
@@ -112,7 +112,9 @@ VoteApp/
     │── vote/       # Code source de l'application Vote (Python)
     │── result/     # Code source de l'application Result (Node.js)
     │── worker/     # Code source du Worker (.NET)
-    │── docker-compose.yml      # Configuration des conteneurs
+    │── docker-compose-original.yml     # Configuration des conteneurs 
+    │── docker-compose.yml      # Configuration des conteneurs pour Docker Swarm 
+
 ```
 
 ## 🖊 **Auteurs**  
