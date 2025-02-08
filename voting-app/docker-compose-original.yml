@@ -1,0 +1,49 @@
+services:
+  node:
+    image: claudeb41/voteapp-node:v1
+    ports:
+      - 8888:8888
+    networks: 
+      - vote
+    depends_on:
+      - postgres
+    volumes:
+      - result:/app/result
+  python:
+    image: claudeb41/voteapp-pyth:v1
+    ports:
+      - 8080:8080
+    depends_on:
+      - redis
+    networks:
+      - vote
+  redis:
+    image: redis:alpine
+    networks:
+      - vote
+    volumes:
+      - redis_data:/data
+  postgres:
+    image: postgres:14.5
+    environment:
+      POSTGRES_USER: postgres 
+      POSTGRES_PASSWORD: postgres 
+      POSTGRES_DB: postgres 
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - vote
+  worker:
+    image: claudeb41/voteapp-worker:v1
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - vote
+networks:
+  vote:
+    driver: bridge
+volumes:
+  redis_data:
+  postgres_data:
+  result:
